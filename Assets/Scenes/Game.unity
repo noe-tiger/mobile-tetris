@@ -617,6 +617,8 @@ MonoBehaviour:
   grid: {fileID: 2089418078}
   next: {fileID: 439697278}
   hold: {fileID: 1927401507}
+  Score: {fileID: 1548834511}
+  Level: {fileID: 144599527}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0

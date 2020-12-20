@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Tetrimino : MonoBehaviour
 {
-    public string shape;
+    public List<string> shape;
     public Sprite sprite;
 
     int drop = 0;
@@ -22,9 +22,9 @@ public class Tetrimino : MonoBehaviour
 
         cubes = new List<Cube>();
 
-        for (int i = 0; i < shape.Length; i += 1)
+        for (int i = 0; i < shape[0].Length; i += 1)
         {
-            if (shape[i] == '#')
+            if (shape[0][i] == '#')
             {
                 Cube tmp = gameObject.AddComponent<Cube>();
                 tmp.pos = new Vector2Int(x, y);
@@ -32,7 +32,7 @@ public class Tetrimino : MonoBehaviour
                 cubes.Add(tmp);
             }
 
-            if (shape[i] == '\\')
+            if (shape[0][i] == '\\')
             {
                 y += 1;
                 x = mid;
@@ -51,7 +51,7 @@ public class Tetrimino : MonoBehaviour
 
     public string GetStrShape()
     {
-        return shape;
+        return shape[rotation];
     }
 
     public List<Cube> GetCubes()
@@ -111,14 +111,23 @@ public class Tetrimino : MonoBehaviour
         return GetShape();
     }
 
-    public List<Vector2Int> TryRotate()
+    public void ApplyRotation(List<Vector2Int> newPos)
     {
-        Debug.Log(shape);
+        rotation += 1;
+        if (rotation == shape.Count)
+            rotation = 0;
+        for (int i = 0; i < newPos.Count; i += 1)
+        {
+            cubes[i].pos = newPos[i];
+        }
+    }
 
+    public List<Vector2Int> TryRotate(Vector2Int gridSize) // TODO Wall Kick
+    {
         List<Vector2Int> pos = new List<Vector2Int>();
 
-        int level = 20;
-        int offset = 10;
+        int level = gridSize.y;
+        int offset = gridSize.x;
 
         for (int i = 0; i < cubes.Count; i += 1)
         {
@@ -128,49 +137,25 @@ public class Tetrimino : MonoBehaviour
                 offset = cubes[i].pos.x;
         }
 
-        rotation += 1; // TODO a remove quand on fera vraiment le try <3
-        if (rotation == 4)
-            rotation = 0;
+        int r = rotation + 1;
+        if (r == shape.Count)
+            r = 0;
 
-        List<List<char>> grid = new List<List<char>>();
-        grid.Add(new List<char>());
-        int p = 0;
-
-        for (int i = 0; i < shape.Length; i += 1)
+        int x = 0;
+        int y = 0;
+        for (int i = 0; i < shape[r].Length; i += 1)
         {
-            if (shape[i] == '\\')
+            if (shape[r][i] == '#')
+                pos.Add(new Vector2Int(x + offset, y + level));
+
+            if (shape[r][i] == '\\')
             {
-                grid.Add(new List<char>());
-                p += 1;
+                y += 1;
+                x = 0;
             }
             else
-                grid[p].Add(shape[i]);
+                x += 1;
         }
-
-        List<List<char>> newGrid = new List<List<char>>();
-        p = 0;
-        for (int i = 0; i < grid[0].Count; i += 1)
-        {
-            newGrid.Add(new List<char>());
-            for (int j = 0; j < grid.Count; j += 1)
-            {
-                newGrid[p].Add(grid[j][i]);
-            }
-            p += 1;
-        }
-
-        int k = 0;
-        for (int i = 0; i < newGrid.Count; i += 1)
-        {
-            for (int j = 0; j < grid[i].Count; j += 1)
-            {
-                cubes[k].pos = new Vector2Int(i + offset, j + level);
-                k += 1;
-            }
-        }
-
-        // assign new pos
-
         return pos;
     }
 }

@@ -59,8 +59,14 @@ public class Grid : MonoBehaviour
         }
     }
 
-    public void Blend(Tetrimino nextTetrimino)
+    public int Blend(Tetrimino nextTetrimino)
     {
+        int score = 0;
+        int[] lines = new int[gridSize.y];
+
+        for (int i = 0; i < gridSize.y; i += 1)
+            lines[i] = 0;
+
         for (int i = 0; i < dropCubes.Count; i += 1)
         {
             dropped.Add(dropping[i]);
@@ -68,15 +74,41 @@ public class Grid : MonoBehaviour
         }
 
         for (int i = 0; i < gridContent.Count; i += 1)
-        {
-            placeObject(dropped[i], gridContent[i].pos.x, gridContent[i].pos.y, transform, gridSize);
-        }
+            lines[gridContent[i].pos.y] += 1;
 
         Destroy(drop);
         drop = nextTetrimino;
-        dropCubes = new List<Cube>();
-        dropping = new List<GameObject>();
+        dropCubes.Clear();
+        dropping.Clear();
+
+        for (int i = 0; i < gridSize.y; i += 1)
+        {
+            if (lines[i] == gridSize.x)
+            {
+                List<int> id = new List<int>();
+                for (int j = 0; j < gridContent.Count; j += 1)
+                    if (gridContent[j].pos.y == i - score)
+                        id.Add(j);
+                for (int j = id.Count - 1; j >= 0; j -= 1)
+                {
+                    Cube tmp = gridContent[id[j]];
+                    gridContent.RemoveAt(id[j]);
+                    Destroy(dropped[id[j]]);
+                    dropped.RemoveAt(id[j]);
+                    Destroy(tmp);
+                }
+                for (int j = 0; j < gridContent.Count; j += 1)
+                    if (gridContent[j].pos.y >= i)
+                        gridContent[j].pos.y -= 1;
+                score += 1;
+            }
+        }
+
+        for (int i = 0; i < gridContent.Count; i += 1)
+            placeObject(dropped[i], gridContent[i].pos.x, gridContent[i].pos.y, transform, gridSize);
+
         UpdateGrid();
+        return score;
     }
 
     public bool Down()
@@ -147,13 +179,21 @@ public class Grid : MonoBehaviour
 
     public bool Rotate()
     {
-        List<Vector2Int> pos = drop.TryRotate();
+        List<Vector2Int> pos = drop.TryRotate(gridSize);
 
         for (int i = 0; i < pos.Count; i += 1)
         {
-            Debug.Log(pos[i]);
+            if (pos[i].x < 0 || pos[i].x > gridSize.x - 1 ||
+                pos[i].y < 0 || pos[i].y > gridSize.y - 1)
+                return false;
+            for (int j = 0; j < gridContent.Count;  j += 1)
+            {
+                if (pos[i].x == gridContent[j].pos.x && pos[i].y == gridContent[j].pos.y)
+                    return false;
+            }
         }
-        return false;
+        drop.ApplyRotation(pos);
+        return true;
     }
 
     void Update()
