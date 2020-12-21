@@ -6,5 +6,5 @@ using UnityEngine.UI;
 public class Cube : MonoBehaviour
 {
     public Vector2Int pos;
-    public Sprite sprite;
+    public GameObject sprite;
 }

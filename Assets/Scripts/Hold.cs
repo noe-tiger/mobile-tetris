@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class Hold : MonoBehaviour
 {
-    public GameObject sample;
-
     public Canvas next;
 
     public List<Tetrimino> tetriminos;
@@ -46,8 +44,8 @@ public class Hold : MonoBehaviour
         holdCubes = hold.GetCubes();
         for (int i = 0; i < holdCubes.Count; i += 1)
         {
-            GameObject tmp = Instantiate(sample, transform);
-            tmp.GetComponent<Image>().sprite = holdCubes[i].sprite;
+            GameObject tmp = Instantiate(holdCubes[i].sprite, transform);
+            //tmp.GetComponent<Image>().sprite = holdCubes[i].sprite;
             placeObject(tmp, holdCubes[i].pos.x, holdCubes[i].pos.y, transform, hold.GetShape());
             tmp.SetActive(true);
             dropping.Add(tmp);

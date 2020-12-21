@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Tetrimino : MonoBehaviour
 {
     public List<string> shape;
-    public Sprite sprite;
+    public GameObject sprite;
 
     int drop = 0;
     int mid = 0;

@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class Next : MonoBehaviour
 {
-    public GameObject sample;
-
     public List<Tetrimino> tetriminos;
 
     List<Cube> nextCubes;
@@ -45,8 +43,8 @@ public class Next : MonoBehaviour
         nextCubes = next.GetCubes();
         for (int i = 0; i < nextCubes.Count; i += 1)
         {
-            GameObject tmp = Instantiate(sample, transform);
-            tmp.GetComponent<Image>().sprite = nextCubes[i].sprite;
+            GameObject tmp = Instantiate(nextCubes[i].sprite, transform);
+            //tmp.GetComponent<Image>().sprite = nextCubes[i].sprite;
             placeObject(tmp, nextCubes[i].pos.x, nextCubes[i].pos.y, transform, next.GetShape());
             tmp.SetActive(true);
             dropping.Add(tmp);

@@ -6,11 +6,9 @@ using UnityEngine.UI;
 
 public class Grid : MonoBehaviour
 {
-    public GameObject sample;
-
     public List<Tetrimino> tetriminos;
 
-    public Sprite ghostSprite;
+    public GameObject ghostSprite;
 
     private Vector2Int gridSize = new Vector2Int(10, 20);
 
@@ -54,8 +52,8 @@ public class Grid : MonoBehaviour
         dropCubes = drop.GetCubes();
         for (int i = 0; i < dropCubes.Count; i += 1)
         {
-            GameObject tmp = Instantiate(sample, transform);
-            tmp.GetComponent<Image>().sprite = dropCubes[i].sprite;
+            GameObject tmp = Instantiate(dropCubes[i].sprite, transform);
+            //tmp.GetComponent<Image>().sprite = dropCubes[i].sprite;
             placeObject(tmp, dropCubes[i].pos.x, dropCubes[i].pos.y, transform, gridSize);
             tmp.SetActive(true);
             dropping.Add(tmp);
@@ -120,14 +118,14 @@ public class Grid : MonoBehaviour
     {
         while (ghost.Count != dropping.Count)
         {
-            ghost.Add(Instantiate(dropping[0], transform));
+            ghost.Add(Instantiate(ghostSprite, transform));
             ghostCubes.Add(Instantiate(dropCubes[0], transform));
         }
         for (int i = 0; i < ghost.Count; i += 1)
         {
             ghostCubes[i].pos = dropCubes[i].pos;
             ghost[i].transform.position = dropping[i].transform.position;
-            ghost[i].GetComponent<Image>().sprite = ghostSprite;
+            //ghost[i].GetComponent<Image>().sprite = ghostSprite;
         }
 
         int tmp = 0;
