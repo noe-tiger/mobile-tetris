@@ -86,11 +86,9 @@ public class GetMoves : MonoBehaviour
             secondPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             Vector2 swipe = new Vector2(secondPressPos.x - firstPressPosVertical.x, secondPressPos.y - firstPressPosVertical.y);
 
-            if (Math.Abs(swipe.x) < 50 && 
-                Math.Abs(swipe.y) < 50)
-            {
+            if (Math.Abs(swipe.x) < 100 && 
+                Math.Abs(swipe.y) < 100)
                 return true;
-            }
         }
         return false;
     }

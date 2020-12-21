@@ -8,6 +8,8 @@ public class Hold : MonoBehaviour
 {
     public GameObject sample;
 
+    public Canvas next;
+
     public List<Tetrimino> tetriminos;
 
     List<Cube> holdCubes;
@@ -58,13 +60,11 @@ public class Hold : MonoBehaviour
         Tetrimino ret = hold;
         hold = tet;
         foreach (GameObject g in dropping)
-        {
             Destroy(g);
-        }
         dropping.Clear();
         UpdateGrid();
         if (ret == null)
-            ret = Instantiate<Tetrimino>(tetriminos[Random.Range(0, tetriminos.Count)], transform);
+            ret = next.GetComponent<Next>().GetNextTetrimino();
         return ret;
     }
 

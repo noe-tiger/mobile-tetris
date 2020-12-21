@@ -38,9 +38,7 @@ public class Tetrimino : MonoBehaviour
                 x = mid;
             }
             else
-            {
                 x += 1;
-            }
         }
     }
 
@@ -66,13 +64,9 @@ public class Tetrimino : MonoBehaviour
         for (int i = 0; i < cubes.Count; i += 1)
         {
             if (cubes[i].pos.x > size.x)
-            {
                 size.x = cubes[i].pos.x;
-            }
             if (cubes[i].pos.y > size.y)
-            {
                 size.y = cubes[i].pos.y;
-            }
         }
         for (int i = 0; i < cubes.Count; i += 1)
         {
@@ -88,13 +82,9 @@ public class Tetrimino : MonoBehaviour
         for (int i = 0; i < cubes.Count; i += 1)
         {
             if (max < cubes[i].pos.x)
-            {
                 max = cubes[i].pos.x;
-            }
             if (max < cubes[i].pos.y)
-            {
                 max = cubes[i].pos.y;
-            }
         }
         return new Vector2Int(max + 1, max + 1);
     }
@@ -102,9 +92,7 @@ public class Tetrimino : MonoBehaviour
     public Vector2Int ResetShape()
     {
         for (int i = 0; i < cubes.Count; i += 1)
-        {
             Destroy(cubes[i]);
-        }
         cubes.Clear();
         cubes = new List<Cube>();
         Init();
@@ -117,9 +105,7 @@ public class Tetrimino : MonoBehaviour
         if (rotation == shape.Count)
             rotation = 0;
         for (int i = 0; i < newPos.Count; i += 1)
-        {
             cubes[i].pos = newPos[i];
-        }
     }
 
     public List<Vector2Int> TryRotate(Vector2Int gridSize) // TODO Wall Kick

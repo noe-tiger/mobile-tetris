@@ -35,9 +35,7 @@ public class Next : MonoBehaviour
     void Start()
     {
         nextCubes = new List<Cube>();
-
         next = Instantiate<Tetrimino>(tetriminos[Random.Range(0, tetriminos.Count)], transform);
-
         nextCubes = next.GetCubes();
     }
 
@@ -60,9 +58,7 @@ public class Next : MonoBehaviour
         Tetrimino ret = next;
         next = Instantiate<Tetrimino>(tetriminos[Random.Range(0, tetriminos.Count)], transform);
         foreach (GameObject g in dropping)
-        {
             Destroy(g);
-        }
         dropping.Clear();
         UpdateGrid();
         return ret;

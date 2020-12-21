@@ -10,13 +10,17 @@ public class Grid : MonoBehaviour
 
     public List<Tetrimino> tetriminos;
 
+    public Sprite ghostSprite;
+
     private Vector2Int gridSize = new Vector2Int(10, 20);
 
     List<GameObject> dropped = new List<GameObject>();
     List<Cube> gridContent;
 
     List<GameObject> dropping = new List<GameObject>();
+    List<GameObject> ghost = new List<GameObject>();
     List<Cube> dropCubes;
+    List<Cube> ghostCubes = new List<Cube>();
 
     Tetrimino drop;
 
@@ -35,7 +39,6 @@ public class Grid : MonoBehaviour
             );
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         gridContent = new List<Cube>();
@@ -98,17 +101,57 @@ public class Grid : MonoBehaviour
                     Destroy(tmp);
                 }
                 for (int j = 0; j < gridContent.Count; j += 1)
-                    if (gridContent[j].pos.y >= i)
+                    if (gridContent[j].pos.y >= i - score)
                         gridContent[j].pos.y -= 1;
                 score += 1;
             }
         }
+
+        // TODO add animation for line destroy
 
         for (int i = 0; i < gridContent.Count; i += 1)
             placeObject(dropped[i], gridContent[i].pos.x, gridContent[i].pos.y, transform, gridSize);
 
         UpdateGrid();
         return score;
+    }
+
+    public void Ghost()
+    {
+        while (ghost.Count != dropping.Count)
+        {
+            ghost.Add(Instantiate(dropping[0], transform));
+            ghostCubes.Add(Instantiate(dropCubes[0], transform));
+        }
+        for (int i = 0; i < ghost.Count; i += 1)
+        {
+            ghostCubes[i].pos = dropCubes[i].pos;
+            ghost[i].transform.position = dropping[i].transform.position;
+            ghost[i].GetComponent<Image>().sprite = ghostSprite;
+        }
+
+        int tmp = 0;
+        bool canGoDown = true;
+        while (canGoDown && tmp < 30)
+        {
+            tmp += 1;
+            for (int i = 0; i < ghostCubes.Count && canGoDown; i += 1)
+            {
+                if (ghostCubes[i].pos.y - tmp < 0)
+                    canGoDown = false;
+                for (int j = 0; j < gridContent.Count; j += 1)
+                {
+                    if (gridContent[j].pos.x == ghostCubes[i].pos.x &&
+                        gridContent[j].pos.y == ghostCubes[i].pos.y - tmp)
+                        canGoDown = false;
+                }
+            }
+        }
+        for (int i = 0; i < ghost.Count; i += 1)
+        {
+            ghostCubes[i].pos.y -= tmp - 1;
+            placeObject(ghost[i], ghostCubes[i].pos.x, ghostCubes[i].pos.y, transform, gridSize);
+        }
     }
 
     public bool Down()
@@ -152,15 +195,13 @@ public class Grid : MonoBehaviour
         }
         return true;
     }
-
+    
     public Tetrimino GetTetrimino()
     {
         Tetrimino ret = drop;
         drop = Instantiate<Tetrimino>(tetriminos[Random.Range(0, tetriminos.Count)], transform);
         foreach (GameObject g in dropping)
-        {
             Destroy(g);
-        }
         dropping.Clear();
         UpdateGrid();
         return ret;
@@ -187,10 +228,8 @@ public class Grid : MonoBehaviour
                 pos[i].y < 0 || pos[i].y > gridSize.y - 1)
                 return false;
             for (int j = 0; j < gridContent.Count;  j += 1)
-            {
                 if (pos[i].x == gridContent[j].pos.x && pos[i].y == gridContent[j].pos.y)
                     return false;
-            }
         }
         drop.ApplyRotation(pos);
         return true;
