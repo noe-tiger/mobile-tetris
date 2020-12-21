@@ -644,7 +644,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e141f8987d4e5d146880fa007440517a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sample: {fileID: 0}
   tetriminos:
   - {fileID: 6366347760021693, guid: 90f1c9ad55b24ff44986d2f30ef47ba8, type: 3}
   - {fileID: 4465118229964216264, guid: 7d44c9c5218951849b6a5b8bcee6862c, type: 3}
@@ -1458,7 +1457,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 100
+  m_Intensity: 97.6
   m_Range: 10
   m_SpotAngle: 94
   m_InnerSpotAngle: 21.80208
@@ -1756,12 +1755,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1927401503}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9a824c7cd1c2244ebee8c686d0d91bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sample: {fileID: 0}
   next: {fileID: 439697278}
   tetriminos:
   - {fileID: 6366347760021693, guid: 90f1c9ad55b24ff44986d2f30ef47ba8, type: 3}
@@ -1883,7 +1881,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c4127fe55bb1b4eba42f54576dd088, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sample: {fileID: 0}
   tetriminos:
   - {fileID: 6366347760021693, guid: 90f1c9ad55b24ff44986d2f30ef47ba8, type: 3}
   - {fileID: 4465118229964216264, guid: 7d44c9c5218951849b6a5b8bcee6862c, type: 3}
@@ -1892,4 +1889,5 @@ MonoBehaviour:
   - {fileID: 5069640877029429575, guid: 25e51e61278cf544595df07fffb37317, type: 3}
   - {fileID: 1953419134622609471, guid: 7cf8b8310e52780409337e4772796708, type: 3}
   - {fileID: 371091167966641923, guid: efc8640a4c0e233458d3eb8eeebfa152, type: 3}
-  ghostSprite: {fileID: 21300000, guid: fcfcace9a9d4f2940a0082241a6c0469, type: 3}
+  ghostSprite: {fileID: 3866165028402874744, guid: 3598ee2f6b22712408d3450812719d2f,
+    type: 3}

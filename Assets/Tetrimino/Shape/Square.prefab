@@ -45,4 +45,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shape:
   - '##\##'
-  sprite: {fileID: 1413145966835375248, guid: 8e86b6d9d096e4f40917c78d271208c1, type: 3}
+  sprite: {fileID: 4843801311625720844, guid: 8e86b6d9d096e4f40917c78d271208c1, type: 3}

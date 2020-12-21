@@ -24,16 +24,20 @@ public class Grid : MonoBehaviour
 
     void placeObject(GameObject obj, int x, int y, Transform tr, Vector2Int shape)
     {
-        Rect test = tr.GetComponent<RectTransform>().rect;
-        Rect me = obj.GetComponent<RectTransform>().rect;
+        Vector2 me = new Vector2 (obj.transform.localScale.x * 2, obj.transform.localScale.y * 2);
 
-        obj.transform.localScale = new Vector3(
-            (test.width / shape.x) / me.width,
-            (test.height / shape.y) / me.height, 1.0f);
+        Rect test = tr.GetComponent<RectTransform>().rect;
+
+        Vector3 newScale = new Vector3(
+            (test.width / shape.x) / me.x,
+            (test.height / shape.y) / me.y,
+            (test.width / shape.x) / me.x);
+        if (newScale.x != 1.0f)
+            obj.transform.localScale = newScale;
 
         obj.transform.localPosition = new Vector3(
                 test.x + (test.width / shape.x) * x + (test.width / shape.x) / 2,
-                test.y + (test.height / shape.y) * y + (test.height / shape.y) / 2, 0
+                test.y + (test.height / shape.y) * y + (test.height / shape.y) / 2, 1
             );
     }
 
@@ -53,7 +57,6 @@ public class Grid : MonoBehaviour
         for (int i = 0; i < dropCubes.Count; i += 1)
         {
             GameObject tmp = Instantiate(dropCubes[i].sprite, transform);
-            //tmp.GetComponent<Image>().sprite = dropCubes[i].sprite;
             placeObject(tmp, dropCubes[i].pos.x, dropCubes[i].pos.y, transform, gridSize);
             tmp.SetActive(true);
             dropping.Add(tmp);
@@ -100,7 +103,7 @@ public class Grid : MonoBehaviour
                 }
                 for (int j = 0; j < gridContent.Count; j += 1)
                     if (gridContent[j].pos.y >= i - score)
-                        gridContent[j].pos.y -= 1;
+                        gridContent[j].pos.y -= 1; 
                 score += 1;
             }
         }
@@ -108,7 +111,9 @@ public class Grid : MonoBehaviour
         // TODO add animation for line destroy
 
         for (int i = 0; i < gridContent.Count; i += 1)
+        {
             placeObject(dropped[i], gridContent[i].pos.x, gridContent[i].pos.y, transform, gridSize);
+        }
 
         UpdateGrid();
         return score;
@@ -168,6 +173,7 @@ public class Grid : MonoBehaviour
         for (int i = 0; i < dropCubes.Count; i += 1)
         {
             dropCubes[i].pos.y -= 1;
+            dropping[i].GetComponent<Animator>().SetTrigger("drop");
             placeObject(dropping[i], dropCubes[i].pos.x, dropCubes[i].pos.y, transform, gridSize);
         }
         return true;
@@ -175,6 +181,8 @@ public class Grid : MonoBehaviour
 
     public bool Move(int move)
     {
+        //if (move == 0)
+        //    return 
         for (int i = 0; i < dropCubes.Count; i += 1)
         {
             if (dropCubes[i].pos.x + move < 0 || dropCubes[i].pos.x + move > gridSize.x - 1)
@@ -230,6 +238,8 @@ public class Grid : MonoBehaviour
                     return false;
         }
         drop.ApplyRotation(pos);
+        //for (int i = 0; i < dropping.Count; i += 1)
+        //    dropCubes[i].sprite.GetComponent<Animator>().Play("rotate");
         return true;
     }
 

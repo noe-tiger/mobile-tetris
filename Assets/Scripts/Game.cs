@@ -60,7 +60,7 @@ public class Game : MonoBehaviour
         else
             playSound(LineSound[lines]);
         cleared += lines;
-        downed = 0;
+        downed = 0; // TODO add clear line animation
     }
 
     IEnumerator UpdateGridDown()
@@ -78,7 +78,7 @@ public class Game : MonoBehaviour
         } else
             downed += 1;
         if (downed >= 0)
-            StartCoroutine(UpdateGridDown());
+            StartCoroutine(UpdateGridDown()); // TODO add go down animation
     }
 
     void Update()
@@ -96,14 +96,15 @@ public class Game : MonoBehaviour
             moved = true;
         grid.GetComponent<Grid>().Ghost();
 
-        //Debug.Log(Input.GetMouseButton(0).ToString() + " " + moved.ToString());
         if (Input.GetMouseButton(0) == false)
             moved = false;
         if (moved == true)
             return;
 
         if (GetComponent<GetMoves>().Rotate())
-            grid.GetComponent<Grid>().Rotate();
+        {
+            grid.GetComponent<Grid>().Rotate(); // TODO add rotation animation
+        }
         else if (GetComponent<GetMoves>().Hold() && !holded)
         {
             playSound(HoldClip);

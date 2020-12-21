@@ -105,7 +105,9 @@ public class Tetrimino : MonoBehaviour
         if (rotation == shape.Count)
             rotation = 0;
         for (int i = 0; i < newPos.Count; i += 1)
+        {
             cubes[i].pos = newPos[i];
+        }
     }
 
     public List<Vector2Int> TryRotate(Vector2Int gridSize) // TODO Wall Kick

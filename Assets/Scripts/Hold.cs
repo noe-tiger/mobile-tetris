@@ -18,16 +18,20 @@ public class Hold : MonoBehaviour
 
     void placeObject(GameObject obj, int x, int y, Transform tr, Vector2Int shape)
     {
-        Rect test = tr.GetComponent<RectTransform>().rect;
-        Rect me = obj.GetComponent<RectTransform>().rect;
+        Vector2 me = new Vector2(obj.transform.localScale.x * 2, obj.transform.localScale.y * 2);
 
-        obj.transform.localScale = new Vector3(
-            (test.width / shape.x) / me.width,
-            (test.height / shape.y) / me.height, 1.0f);
+        Rect test = tr.GetComponent<RectTransform>().rect;
+
+        Vector3 newScale = new Vector3(
+            (test.width / shape.x) / me.x,
+            (test.height / shape.y) / me.y,
+            (test.width / shape.x) / me.x);
+        if (newScale.x != 1.0f)
+            obj.transform.localScale = newScale;
 
         obj.transform.localPosition = new Vector3(
                 test.x + (test.width / shape.x) * x + (test.width / shape.x) / 2,
-                test.y + (test.height / shape.y) * y + (test.height / shape.y) / 2, 0
+                test.y + (test.height / shape.y) * y + (test.height / shape.y) / 2, 1
             );
     }
 
